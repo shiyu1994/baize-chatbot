@@ -26,6 +26,8 @@ import transformers
 from torch.utils.data import Dataset
 from transformers import Trainer
 
+from transformers.trainer_utils import ShardedDDPOption
+
 import utils
 
 IGNORE_INDEX = -100
@@ -275,6 +277,7 @@ trainer = transformers.Trainer(
         save_total_limit=100,
         load_best_model_at_end=True if VAL_SET_SIZE > 0 else False,
         ddp_find_unused_parameters=False if ddp else None,
+        sharded_ddp=ShardedDDPOption.SIMPLE,
     ),
     #data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
     **data_module,
